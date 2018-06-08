@@ -1,0 +1,11 @@
+#roach {
+width: 60px;
+height: 30px;
+ /*background-color:red;*/
+position:fixed;   
+}
+
+img {
+	width: 100%;
+	height: 100%;
+}

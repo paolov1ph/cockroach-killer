@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Game</title>
+	
+	<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id='roach'><img src="animated-cockroach-image-0010.gif"></div>
+	
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+    	animateDiv();
+    
+		});
+
+		function makeNewPosition(){
+		    // Get viewport dimensions (remove the dimension of the div)
+		    var h = $(window).height() - 30;
+		    var w = $(window).width() - 60;
+		    
+		    var nh = Math.floor(Math.random() * h);
+		    var nw = Math.floor(Math.random() * w);
+		    
+		    return [nh,nw];    
+    
+		}
+
+		function animateDiv(){
+    		var newq = makeNewPosition();
+    	    var oldq = $('#roach').offset();
+    		var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+    		$('#roach').animate({ top: newq[0], left: newq[1] }, speed, function(){
+      		animateDiv();
+			});
+    
+		};
+
+		function calcSpeed(prev, next) {   
+			var x = Math.abs(prev[1] - next[1]);
+			var y = Math.abs(prev[0] - next[0]);
+
+			var greatest = x > y ? x : y;
+    
+			var speedModifier = 1.0;
+
+			var speed = Math.ceil(greatest/speedModifier);
+
+			return speed;
+
+		}
+
+
+	</script>
+</body>
+</html>
