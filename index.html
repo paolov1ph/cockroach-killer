@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Game</title>
+	<title>Cockroach Killer</title>
 	
 	<script
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -14,24 +14,72 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<div id='roach'><img src="animated-cockroach-image-0010.gif"></div>
+	<h1></h1>
+	<div id='roach'><img src="animated-cockroach-image-0010.gif" id="roachImage"></div>
 	
 
 	<script type="text/javascript">
+		alert("Welcome to Cockroach Killer!!"); //welcome message
+		
+		var difficulty = prompt("Please enter difficulty, 1-very easy, 2-easy, 3-medium, 4-hard, 5-very hard"); //difficulty input
+		
+		switch(difficulty){
+			case "1":
+				var difficultySize = 100;
+				var difficultySpeed = 0.2;
+				break;
+			case "2":
+				var difficultySize = 85;
+				var difficultySpeed = 0.4;
+				break;
+			case "3":
+				var difficultySize = 70;
+				var difficultySpeed = 0.6;
+				break;
+			case "4":
+				var difficultySize = 60;
+				var difficultySpeed = 0.8;
+				break;
+			case "5":
+				var difficultySize = 50;
+				var difficultySpeed = 1.0;
+				break;
+			default:
+				var difficultySize = 70;
+				var difficultySpeed = 0.6;
+		}
+
+
 		$(document).ready(function(){
+
+		$('#roach').height(difficultySize);
+		$('#roach').width(difficultySize);
+		
     	animateDiv();
+    	
+    	
+    	
+    	$('#roach').click(function(){
+			$('#roachImage').attr('src','kisspng-cockroach-royalty-free-clip-art-cockroach-vector-design-creative-5a7b6eed25f339.0338366715180387651555.png'); //change image to dead roach
+
+			$('#roach').stop(true,false); //stop animation and queue
+		})
     
 		});
 
+
+		
+
+
 		function makeNewPosition(){
 		    // Get viewport dimensions (remove the dimension of the div)
-		    var h = $(window).height() - 30;
-		    var w = $(window).width() - 60;
+		    var h = $(window).height() - difficultySize;
+		    var w = $(window).width() - difficultySize;
 		    
-		    var nh = Math.floor(Math.random() * h);
-		    var nw = Math.floor(Math.random() * w);
+		    var nh = Math.floor(Math.random() * h); //generate new random coordinates for height
+		    var nw = Math.floor(Math.random() * w);	//generate new random coordinates for width
 		    
-		    return [nh,nw];    
+		    return [nh,nw];    //new coordinates
     
 		}
 
@@ -52,14 +100,13 @@
 
 			var greatest = x > y ? x : y;
     
-			var speedModifier = 1.0;
-
+			var speedModifier = difficultySpeed;
+			
 			var speed = Math.ceil(greatest/speedModifier);
 
 			return speed;
 
 		}
-
 
 	</script>
 </body>
