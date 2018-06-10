@@ -14,7 +14,9 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h1></h1>
+	<div>
+		<output id="display-area">00:00:00.000</output>
+	</div>
 	<div id='roach'><img src="animated-cockroach-image-0010.gif" id="roachImage"></div>
 	
 
@@ -25,28 +27,34 @@
 		
 		switch(difficulty){
 			case "1":
-				var difficultySize = 100;
+				var difficultySize = 150;
 				var difficultySpeed = 0.2;
+				var difficultyText = "Very Easy difficulty";
 				break;
 			case "2":
-				var difficultySize = 85;
-				var difficultySpeed = 0.4;
+				var difficultySize = 125;
+				var difficultySpeed = 0.35;
+				var difficultyText = "Easy difficulty";
 				break;
 			case "3":
-				var difficultySize = 70;
-				var difficultySpeed = 0.6;
+				var difficultySize = 100;
+				var difficultySpeed = 0.5;
+				var difficultyText = "Medium difficulty";
 				break;
 			case "4":
-				var difficultySize = 60;
-				var difficultySpeed = 0.8;
+				var difficultySize = 75;
+				var difficultySpeed = 0.65;
+				var difficultyText = "Hard difficulty";
 				break;
 			case "5":
 				var difficultySize = 50;
-				var difficultySpeed = 1.0;
+				var difficultySpeed = 0.8;
+				var difficultyText = "Very Hard difficulty";
 				break;
 			default:
-				var difficultySize = 70;
-				var difficultySpeed = 0.6;
+				var difficultySize = 100;
+				var difficultySpeed = 0.5;
+				var difficultyText = "Medium difficulty";
 		}
 
 
@@ -56,20 +64,24 @@
 		$('#roach').width(difficultySize);
 		
     	animateDiv();
-    	
+    	start();
     	
     	
     	$('#roach').click(function(){
-			$('#roachImage').attr('src','kisspng-cockroach-royalty-free-clip-art-cockroach-vector-design-creative-5a7b6eed25f339.0338366715180387651555.png'); //change image to dead roach
+			$('#roachImage').attr('src','kisspng-cockroach-royalty-free-clip-art-cockroach-vector-design-creative-5a7b6eed25f339.0338366715180387651555-transparent-optimized.png'); //change image to dead roach
 
 			$('#roach').stop(true,false); //stop animation and queue
+
+			var timeElapsed = $('#display-area').html();
+
+			setTimeout(function(){
+				alert("Congratulations! You killed the Cockroach on " + difficultyText + " in " + timeElapsed[0]+timeElapsed[1] + " minutes " + timeElapsed[3]+timeElapsed[4] + " seconds and " + timeElapsed[6]+timeElapsed[7]+timeElapsed[8]+ " milliseconds");} , 500
+				);
+			
+			stop();
 		})
     
 		});
-
-
-		
-
 
 		function makeNewPosition(){
 		    // Get viewport dimensions (remove the dimension of the div)
@@ -95,10 +107,10 @@
 		};
 
 		function calcSpeed(prev, next) {   
-			var x = Math.abs(prev[1] - next[1]);
-			var y = Math.abs(prev[0] - next[0]);
+			var x = Math.abs(prev[1] - next[1]); //difference of prev and new widths, gets positive value
+			var y = Math.abs(prev[0] - next[0]); // difference of prev and new heights, gets positive value
 
-			var greatest = x > y ? x : y;
+			var greatest = x > y ? x : y; //gets longer distance
     
 			var speedModifier = difficultySpeed;
 			
@@ -107,6 +119,58 @@
 			return speed;
 
 		}
+
+		// begin Stopwatch
+		var timeBegan = null
+		    , timeStopped = null
+		    , stoppedDuration = 0
+		    , started = null;
+
+		function start() {
+		    if (timeBegan == null) {
+		        timeBegan = new Date();
+		    }
+
+		    if (timeStopped != null) {
+		        stoppedDuration += (new Date() - timeStopped);
+		    }
+		    console.log(stoppedDuration);
+
+		    started = setInterval(clockRunning, 10);	
+		}
+
+		function stop() {
+		    timeStopped = new Date();
+		    clearInterval(started);
+		}
+		 
+		function reset() {
+		    clearInterval(started);
+		    stoppedDuration = 0;
+		    timeBegan = null;
+		    timeStopped = null;
+		    // document.getElementById("display-area").innerHTML = "00:00.000";
+		    $('#display-area').html("00:00.000");
+		}
+
+		function clockRunning(){
+		    var currentTime = new Date()
+		        , timeElapsed = new Date(currentTime - timeBegan - stoppedDuration)
+		        , hour = timeElapsed.getUTCHours()
+		        , min = timeElapsed.getUTCMinutes()
+		        , sec = timeElapsed.getUTCSeconds()
+		        , ms = timeElapsed.getUTCMilliseconds();
+
+			$('#display-area').html(
+		    // document.getElementById("display-area").innerHTML = 
+		        // (hour > 9 ? hour : "0" + hour) + ":" + 
+		        (min > 9 ? min : "0" + min) + ":" + 
+		        (sec > 9 ? sec : "0" + sec) + "." + 
+		        (ms > 99 ? ms : ms > 9 ? "0" + ms : "00" + ms)
+		        );
+		};		
+
+
 
 	</script>
 </body>
